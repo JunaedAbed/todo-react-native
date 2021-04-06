@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   square: {
     width: 24,
     height: 24,
-    backgroundColor: "#a2d0c0",
+    backgroundColor: "#2d5b6b",
     opacity: 0.4,
     borderRadius: 5,
     marginRight: 15,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   circle: {
     width: 12,
     height: 12,
-    borderColor: "#a2d0c0",
+    borderColor: "#2d5b6b",
     borderWidth: 2,
     borderRadius: 5,
   },

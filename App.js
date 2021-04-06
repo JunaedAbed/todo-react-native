@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
@@ -11,6 +12,21 @@ import {
 import Task from "./components/Task";
 
 export default function App() {
+  const [task, setTask] = useState();
+  const [taskItems, setTaskItems] = useState([]);
+
+  const handleAddTask = () => {
+    Keyboard.dismiss();
+    setTaskItems([...taskItems, task]);
+    setTask(null);
+  };
+
+  const completeTask = (index) => {
+    let itemsCopy = [...taskItems];
+    itemsCopy.splice(index, 1);
+    setTaskItems(itemsCopy);
+  };
+
   return (
     <View style={styles.container}>
       {/* todays task */}
@@ -19,8 +35,13 @@ export default function App() {
 
         <View style={styles.items}>
           {/* tasks */}
-          <Task text={"Task 1"} />
-          <Task text={"Task 2"} />
+          {taskItems.map((item, index) => {
+            return (
+              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
+                <Task text={item} />
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
 
@@ -32,8 +53,10 @@ export default function App() {
         <TextInput
           style={styles.input}
           placeholder={"Start writing a task..."}
+          value={task}
+          onChangeText={(text) => setTask(text)}
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>
           </View>
@@ -73,7 +96,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     width: 250,
     backgroundColor: "white",
-    borderRadius: 60,
+    borderRadius: 10,
   },
   addWrapper: {
     width: 60,
