@@ -1,110 +1,104 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
+  StyleSheet,
   View,
+  TouchableOpacity,
+  FlatList,
+  Modal,
 } from "react-native";
-import Task from "./components/Task";
+import { AntDesign } from "@expo/vector-icons";
+import colors from "./components/Colors";
+import tempData from "./tempData";
+import TodoList from "./components/TodoList";
+import AddListModal from "./components/AddListModal";
 
-export default function App() {
-  const [task, setTask] = useState();
-  const [taskItems, setTaskItems] = useState([]);
-
-  const handleAddTask = () => {
-    Keyboard.dismiss();
-    setTaskItems([...taskItems, task]);
-    setTask(null);
+export default class App extends Component {
+  state = {
+    addTodoVisible: false,
   };
 
-  const completeTask = (index) => {
-    let itemsCopy = [...taskItems];
-    itemsCopy.splice(index, 1);
-    setTaskItems(itemsCopy);
-  };
+  toggleAddTodoModal() {
+    this.setState({ addTodoVisible: !this.state.addTodoVisible });
+  }
 
-  return (
-    <View style={styles.container}>
-      {/* todays task */}
-      <View style={styles.taskWrapper}>
-        <Text style={styles.sectionTitle}>Today's Tasks</Text>
+  render() {
+    return (
+      <View style={styles.container}>
+        <Modal
+          animationType="fade"
+          visible={this.state.addTodoVisible}
+          onRequestClose={() => this.toggleAddTodoModal()}
+        >
+          <AddListModal closeModal={() => this.toggleAddTodoModal()} />
+        </Modal>
+        <View style={{ flexDirection: "row" }}>
+          <View style={styles.divider} />
+          <Text style={styles.title}>
+            Todo
+            <Text style={{ fontWeight: "300", color: colors.grey }}>Lists</Text>
+          </Text>
+          <View style={styles.divider} />
+        </View>
 
-        <View style={styles.items}>
-          {/* tasks */}
-          {taskItems.map((item, index) => {
-            return (
-              <TouchableOpacity key={index} onPress={() => completeTask(index)}>
-                <Task text={item} />
-              </TouchableOpacity>
-            );
-          })}
+        <View
+          style={{
+            marginVertical: 50,
+          }}
+        >
+          <TouchableOpacity
+            style={styles.addList}
+            onPress={() => this.toggleAddTodoModal()}
+          >
+            <AntDesign name="plus" size={20} color={colors.darkBlue} />
+          </TouchableOpacity>
+
+          <Text style={styles.add}>Add List</Text>
+        </View>
+        <View style={{ height: 290, paddingLeft: 0 }}>
+          <FlatList
+            data={tempData}
+            keyExtractor={(item) => item.name}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => <TodoList list={item} />}
+          />
         </View>
       </View>
-
-      {/* write a task */}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.writeTaskWrapper}
-      >
-        <TextInput
-          style={styles.input}
-          placeholder={"Start writing a task..."}
-          value={task}
-          onChangeText={(text) => setTask(text)}
-        />
-        <TouchableOpacity onPress={() => handleAddTask()}>
-          <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
-          </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#a4b6dd",
-  },
-  taskWrapper: {
-    paddingTop: 80,
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  items: {
-    marginTop: 25,
-  },
-  writeTaskWrapper: {
-    position: "absolute",
-    bottom: 60,
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
+    backgroundColor: "#ffff",
     alignItems: "center",
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    paddingLeft: 10,
-    width: 250,
-    backgroundColor: "white",
-    borderRadius: 10,
-  },
-  addWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: "#fff",
-    borderRadius: 60,
     justifyContent: "center",
-    alignItems: "center",
   },
-  addText: {},
+  divider: {
+    backgroundColor: colors.darkPink,
+    height: 1,
+    flex: 1,
+    alignSelf: "center",
+  },
+  title: {
+    fontSize: 35,
+    fontWeight: "700",
+    paddingHorizontal: 30,
+  },
+  addList: {
+    borderWidth: 1,
+    borderColor: colors.darkPink,
+    borderRadius: 50,
+    padding: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  add: {
+    color: colors.grey,
+    fontWeight: "600",
+    fontSize: 14,
+    marginTop: 7,
+  },
 });
