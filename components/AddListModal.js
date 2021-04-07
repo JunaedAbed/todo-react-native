@@ -26,6 +26,25 @@ export default class AddListModal extends Component {
     color: this.backgroundColors[0],
   };
 
+  createTodo = () => {
+    if (this.state.name != "") {
+      const { name, color } = this.state;
+
+      tempData.push({
+        name,
+        color,
+        todos: [],
+      });
+
+      this.setState({
+        name: "",
+      });
+      this.props.closeModal();
+    } else {
+      this.props.closeModal();
+    }
+  };
+
   renderColors() {
     return this.backgroundColors.map((color) => {
       return (
@@ -40,7 +59,10 @@ export default class AddListModal extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <KeyboardAvoidingView
+        style={[styles.container, { backgroundColor: this.state.color }]}
+        behavior="padding"
+      >
         <TouchableOpacity
           style={{ position: "absolute", top: 30, right: 25 }}
           onPress={this.props.closeModal}
@@ -57,8 +79,18 @@ export default class AddListModal extends Component {
             onChangeText={(text) => this.setState({ name: text })}
           />
 
-          <TouchableOpacity style={[styles.create]}>
-            <AntDesign name="plus" size={28} color={colors.seaGreen} />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginTop: 20,
+            }}
+          >
+            {this.renderColors()}
+          </View>
+
+          <TouchableOpacity style={[styles.create]} onPress={this.createTodo}>
+            <AntDesign name="plus" size={28} color={colors.grey} />
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -75,13 +107,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "800",
-    color: colors.seaGreen,
+    color: colors.black,
     alignSelf: "center",
     marginBottom: 16,
   },
   input: {
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.seaGreen,
+    borderWidth: 1.25,
+    borderColor: colors.black,
     borderRadius: 6,
     height: 50,
     marginTop: 8,
@@ -92,11 +124,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: 50,
     width: 50,
-    borderColor: colors.seaGreen,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.black,
+    borderWidth: 1.25,
     borderRadius: 50,
     alignItems: "center",
     alignSelf: "center",
     justifyContent: "center",
+  },
+  colorSelect: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    borderWidth: 0.5,
   },
 });
