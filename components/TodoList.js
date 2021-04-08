@@ -56,18 +56,19 @@ export default class TodoList extends React.Component {
 
 const styles = StyleSheet.create({
   listContainer: {
-    paddingVertical: 30,
+    paddingVertical: 50,
     paddingHorizontal: 16,
     borderRadius: 10,
     marginHorizontal: 12,
     alignItems: "center",
+    flex: 1,
     width: 200,
   },
   listTitle: {
     fontSize: 22,
     fontWeight: "700",
     color: colors.darkBlue,
-    marginBottom: 18,
+    marginBottom: 40,
   },
   count: {
     fontSize: 35,
@@ -78,5 +79,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "100",
     color: colors.black,
+    marginBottom: 35,
   },
 });

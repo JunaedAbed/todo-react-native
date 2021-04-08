@@ -4,7 +4,7 @@ export default tempData = [
   {
     id: 1,
     name: "Plan a trip",
-    color: "#24a6D9",
+    color: "#d09292",
     todos: [
       {
         title: "Book Hotel",
@@ -25,7 +25,7 @@ export default tempData = [
   {
     id: 2,
     name: "Finish CSE460",
-    color: "#80a71a",
+    color: "#79c7b6",
     todos: [
       {
         title: "week 4",
@@ -41,7 +41,7 @@ export default tempData = [
   {
     id: 3,
     name: "Daily chores",
-    color: "#8a436a",
+    color: "#9c9c9c",
     todos: [
       {
         title: "get a haircut",

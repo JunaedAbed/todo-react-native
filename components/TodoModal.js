@@ -25,11 +25,13 @@ export default class TodoModal extends Component {
   };
 
   addTodo = () => {
-    let list = this.props.list;
-    list.todos.push({ title: this.state.newTodo, completed: false });
+    if (this.state.newTodo != "") {
+      let list = this.props.list;
+      list.todos.push({ title: this.state.newTodo, completed: false });
 
-    this.props.updateList(list);
-    this.setState({ newTodo: "" });
+      this.props.updateList(list);
+      this.setState({ newTodo: "" });
+    }
   };
 
   renderTodo = (todo, index) => {
@@ -82,7 +84,7 @@ export default class TodoModal extends Component {
             style={[
               styles.section,
               styles.header,
-              { borderBottomColor: colors.black },
+              { borderBottomColor: colors.black, borderBottomRightRadius: 0 },
             ]}
           >
             <View>
@@ -100,7 +102,7 @@ export default class TodoModal extends Component {
               keyExtractor={(item) => item.title}
               contentContainerStyle={{
                 paddingHorizontal: 30,
-                paddingVertical: 34,
+                paddingVertical: 24,
               }}
               showsVerticalScrollIndicator={false}
             />
@@ -142,25 +144,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   section: {
-    flex: 1,
+    flex: 0.75,
     alignSelf: "stretch",
   },
   header: {
     justifyContent: "flex-end",
-    marginLeft: 30,
+    marginLeft: 0,
     marginRight: 0,
-    borderBottomWidth: 5,
+    borderBottomWidth: 1,
   },
   title: {
     fontSize: 35,
     fontWeight: "bold",
     color: colors.black,
+    paddingLeft: 30,
   },
   taskCount: {
     color: colors.darkBlue,
     marginTop: 4,
     marginBottom: 16,
     fontWeight: "normal",
+    paddingLeft: 30,
   },
   footer: {
     paddingHorizontal: 20,

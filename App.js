@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
+  Dimensions,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "./components/Colors";
 import tempData from "./tempData";
 import TodoList from "./components/TodoList";
 import AddListModal from "./components/AddListModal";
+
+// const {width: width} = Dimensions.get('window')
 
 export default class App extends Component {
   state = {
@@ -57,18 +60,46 @@ export default class App extends Component {
             addList={this.addList}
           />
         </Modal>
-        <View style={{ flexDirection: "row" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            marginBottom: 170,
+            backgroundColor: colors.grey,
+          }}
+        >
           <View style={styles.divider} />
           <Text style={styles.title}>
             Todo
-            <Text style={{ fontWeight: "300", color: colors.grey }}>Lists</Text>
+            <Text style={{ fontWeight: "300", color: colors.seaGreen }}>
+              Lists
+            </Text>
           </Text>
           <View style={styles.divider} />
         </View>
 
         <View
+          style={[
+            styles.todoDisplay,
+            {
+              height: 350,
+              paddingLeft: 0,
+            },
+          ]}
+        >
+          <FlatList
+            data={this.state.lists}
+            keyExtractor={(item) => item.name}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => this.renderList(item)}
+            keyboardShouldPersistTaps="always"
+          />
+        </View>
+
+        <View
           style={{
             marginVertical: 50,
+            paddingTop: 50,
           }}
         >
           <TouchableOpacity
@@ -80,16 +111,6 @@ export default class App extends Component {
 
           <Text style={styles.add}>Add List</Text>
         </View>
-        <View style={{ height: 290, paddingLeft: 0 }}>
-          <FlatList
-            data={this.state.lists}
-            keyExtractor={(item) => item.name}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => this.renderList(item)}
-            keyboardShouldPersistTaps="always"
-          />
-        </View>
       </View>
     );
   }
@@ -97,25 +118,29 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 3,
     backgroundColor: "#ffff",
     alignItems: "center",
     justifyContent: "center",
   },
   divider: {
-    backgroundColor: colors.darkPink,
+    backgroundColor: colors.black,
     height: 1,
     flex: 1,
     alignSelf: "center",
   },
+
   title: {
     fontSize: 35,
     fontWeight: "700",
     paddingHorizontal: 30,
   },
+  todoDisplay: {
+    paddingTop: 0,
+  },
   addList: {
-    borderWidth: 1,
-    borderColor: colors.darkPink,
+    borderWidth: 0,
+    backgroundColor: colors.grey,
     borderRadius: 50,
     padding: 18,
     alignItems: "center",
