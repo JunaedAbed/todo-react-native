@@ -13,13 +13,14 @@ import colors from "./Colors";
 export default class AddListModal extends Component {
   backgroundColors = [
     "#d09292",
-    "#83bb83",
+    "#79c7b6",
     "#bb83bb",
     "#c99dd5",
     "#F39A27",
-    "#03C03C",
+    "#3a5a90",
     "#00C891",
-    "#FF5D1A",
+    "#f95959",
+    "#9c9c9c",
   ];
   state = {
     name: "",

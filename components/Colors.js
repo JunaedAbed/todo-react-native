@@ -5,6 +5,6 @@ export default colors = {
   seaGreen: "#86c2bd",
   darkBlue: "#0a091e",
   pink: "#c391c5",
-  black: "#0a091e",
+  black: "#181818",
   darkPink: "#8a436a",
 };
