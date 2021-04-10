@@ -6,21 +6,43 @@ import {
   TouchableOpacity,
   FlatList,
   Modal,
-  Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "./components/Colors";
 import tempData from "./tempData";
 import TodoList from "./components/TodoList";
 import AddListModal from "./components/AddListModal";
-
-// const {width: width} = Dimensions.get('window')
+import Fire from "./Fire";
+import firebase from "firebase";
 
 export default class App extends Component {
   state = {
     addTodoVisible: false,
-    lists: tempData,
+    lists: [],
+    user: {},
+    loading: true,
   };
+
+  componentDidMount() {
+    fb = new Fire((error, user) => {
+      if (error) {
+        return alert("something went wrong");
+      }
+
+      fb.getLists((lists) => {
+        this.setState({ lists, user }, () => {
+          this.setState({ loading: false });
+        });
+      });
+
+      this.setState({ user });
+    });
+  }
+
+  componentWillUnmount() {
+    fb.detach();
+  }
 
   toggleAddTodoModal() {
     this.setState({ addTodoVisible: !this.state.addTodoVisible });
@@ -31,23 +53,26 @@ export default class App extends Component {
   };
 
   addList = (list) => {
-    this.setState({
-      lists: [
-        ...this.state.lists,
-        { ...list, id: this.state.lists.length + 1, todos: [] },
-      ],
+    fb.addList({
+      name: list.name,
+      color: list.color,
+      todos: [],
     });
   };
 
   updateList = (list) => {
-    this.setState({
-      lists: this.state.lists.map((item) => {
-        return item.id === list.id ? list : item;
-      }),
-    });
+    fb.updateList(list);
   };
 
   render() {
+    if (this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color={colors.grey} />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <Modal
@@ -60,6 +85,11 @@ export default class App extends Component {
             addList={this.addList}
           />
         </Modal>
+
+        <View>
+          <Text>User: {this.state.user.uid}</Text>
+        </View>
+
         <View
           style={{
             flexDirection: "row",
@@ -88,7 +118,7 @@ export default class App extends Component {
         >
           <FlatList
             data={this.state.lists}
-            keyExtractor={(item) => item.name}
+            keyExtractor={(item) => item.id.toString()}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => this.renderList(item)}
