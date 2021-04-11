@@ -35,6 +35,11 @@ export default class TodoModal extends Component {
     }
   };
 
+  updateTodo = (index) => {
+    let list = this.props.list;
+    list.props.updateList(list);
+  };
+
   deleteTodo = (index) => {
     let list = this.props.list;
     list.todos.splice(index, 1);
@@ -53,7 +58,21 @@ export default class TodoModal extends Component {
           />
         </TouchableOpacity>
 
-        <Text
+        <TextInput
+          style={[
+            styles.todo,
+            {
+              textDecorationLine: todo.completed ? "line-through" : "none",
+              color: todo.completed ? colors.grey : colors.black,
+            },
+          ]}
+          onChangeText={() => {
+            this.updateTodo(index);
+          }}
+        >
+          {todo.title}
+        </TextInput>
+        {/* <Text
           style={[
             styles.todo,
             {
@@ -63,7 +82,7 @@ export default class TodoModal extends Component {
           ]}
         >
           {todo.title}
-        </Text>
+        </Text> */}
 
         <View style={{ left: 320, position: "absolute" }}>
           <TouchableOpacity onPress={() => this.deleteTodo(index)}>
