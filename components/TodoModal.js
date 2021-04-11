@@ -8,6 +8,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   TextInput,
+  Animated,
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import colors from "./Colors";
@@ -34,6 +35,13 @@ export default class TodoModal extends Component {
     }
   };
 
+  deleteTodo = (index) => {
+    let list = this.props.list;
+    list.todos.splice(index, 1);
+
+    this.props.updateList(list);
+  };
+
   renderTodo = (todo, index) => {
     return (
       <View style={styles.todoContainer}>
@@ -56,6 +64,16 @@ export default class TodoModal extends Component {
         >
           {todo.title}
         </Text>
+
+        <View style={{ left: 320, position: "absolute" }}>
+          <TouchableOpacity onPress={() => this.deleteTodo(index)}>
+            <Ionicons
+              name="close-outline"
+              size={22}
+              style={{ width: 32, color: colors.grey }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
@@ -137,6 +155,8 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontWeight: "normal",
     fontSize: 16,
+    paddingRight: 20,
+    flexShrink: 1,
   },
   container: {
     flex: 1,

@@ -35,6 +35,7 @@ export default class TodoList extends React.Component {
         <TouchableOpacity
           style={[styles.listContainer, { backgroundColor: list.color }]}
           onPress={() => this.toggleListModal()}
+          onLongPress={() => this.props.deleteList(list)}
         >
           <Text style={styles.listTitle} numberOfLines={1}>
             {list.name}

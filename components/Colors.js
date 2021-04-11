@@ -7,4 +7,5 @@ export default colors = {
   pink: "#c391c5",
   black: "#181818",
   darkPink: "#8a436a",
+  red: "#ff6961",
 };

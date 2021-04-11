@@ -7,10 +7,10 @@ import {
   FlatList,
   Modal,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "./components/Colors";
-import tempData from "./tempData";
 import TodoList from "./components/TodoList";
 import AddListModal from "./components/AddListModal";
 import Fire from "./Fire";
@@ -49,7 +49,13 @@ export default class App extends Component {
   }
 
   renderList = (list) => {
-    return <TodoList list={list} updateList={this.updateList} />;
+    return (
+      <TodoList
+        list={list}
+        updateList={this.updateList}
+        deleteList={this.deleteList}
+      />
+    );
   };
 
   addList = (list) => {
@@ -62,6 +68,20 @@ export default class App extends Component {
 
   updateList = (list) => {
     fb.updateList(list);
+  };
+
+  deleteList = (list) => {
+    // alert("Delete List?");
+    Alert.alert(
+      "",
+      "Delete List?",
+      [
+        { text: "Cancel", onPress: () => {} },
+        { text: "OK", onPress: () => fb.deleteList(list) },
+      ],
+      { cancelable: false }
+    );
+    // fb.deleteList(list);
   };
 
   render() {
@@ -85,10 +105,6 @@ export default class App extends Component {
             addList={this.addList}
           />
         </Modal>
-
-        <View>
-          <Text>User: {this.state.user.uid}</Text>
-        </View>
 
         <View
           style={{
