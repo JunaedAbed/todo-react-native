@@ -4,7 +4,7 @@
     "slug": "todo-react-native",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "userInterfaceStyle": "light"
+      "userInterfaceStyle": "light",
+      "package": "com.junaedabed.todoreactnative"
     },
     "web": {
       "favicon": "./assets/favicon.png"
